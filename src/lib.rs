@@ -77,9 +77,15 @@ pub fn uncrunch(s: &str) -> Result<Vec<&str>, &'static str> {
                     None => return Err("Each page range (e.g. 3-5) must have exactly one '-'"),
                 };
 
-                // convert to numbers, todo: error handling
-                let start = start.parse::<i32>().unwrap();
-                let end = end.parse::<i32>().unwrap();
+                // shadow and convert to numbers
+                let start: i32 = match start.parse() {
+                    Ok(v) => v,
+                    Err(_) => return Err("Couldn't parse range"),
+                };
+                let end: i32 = match end.parse() {
+                    Ok(v) => v,
+                    Err(_) => return Err("Couldn't parse range"),
+                };
 
                 for i in start..end + 1 {
                     results.push((i as u32, value));
