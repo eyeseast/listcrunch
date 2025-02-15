@@ -10,9 +10,11 @@ The `listcrunch` crate exposes two functions: `crunch` and `uncrunch`:
 use listcrunch::crunch;
 
 fn main() {
-    compressed_string = crunch(vec![["595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0"]]);
-    println!(compressed_string);
-    // Returns "595.0x842.0:0-6", meaning 595.0x842.0 appears in indices 0-6 (inclusive),
+    let pages = vec!["595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0"];
+    let compressed_string = crunch(&pages);
+
+    println!("page_spec = {compressed_string}");
+    assert_eq!(compressed_string, "595.0x842.0:0-6");
 }
 ```
 
@@ -22,7 +24,10 @@ use listcrunch::uncrunch;
 fn main() {
     let decompressed = uncrunch("595.0x842.0:0-6").unwrap();
     println!("{:?}", decompressed);
-    // Returns ["595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0"]
+    assert_eq!(
+        decompressed,
+        vec!["595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0"]
+    );
 }
 ```
 

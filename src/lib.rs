@@ -1,5 +1,20 @@
+#![doc = include_str!("../README.md")]
+
 use std::{collections::HashMap, fmt::Display, hash::Hash};
 
+/**
+`crunch` compresses an interable into a compressed string
+
+## Examples
+
+```
+use listcrunch::crunch;
+
+let pages = vec!["595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0"];
+let compressed_string = crunch(&pages);
+assert_eq!(compressed_string, "595.0x842.0:0-6");
+```
+*/
 pub fn crunch<T: Hash + Eq + Display>(list: &[T]) -> String {
     // bail early for empty lists
     if list.len() == 0 {
@@ -37,6 +52,21 @@ pub fn crunch<T: Hash + Eq + Display>(list: &[T]) -> String {
     parts.join(";")
 }
 
+/**
+`uncrunch` turns a crunched string into a vector of string slices
+
+## Examples
+
+```
+use listcrunch::uncrunch;
+
+let decompressed = uncrunch("595.0x842.0:0-6").unwrap();
+assert_eq!(
+    decompressed,
+    vec!["595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0", "595.0x842.0"]
+);
+```
+*/
 pub fn uncrunch(s: &str) -> Result<Vec<&str>, &'static str> {
     // for an empty string, return an empty vector
     if s.trim().len() == 0 {
